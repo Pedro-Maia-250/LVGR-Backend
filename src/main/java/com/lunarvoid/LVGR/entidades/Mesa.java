@@ -1,9 +1,15 @@
 package com.lunarvoid.LVGR.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,6 +20,10 @@ public class Mesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numero;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "mesa")
+    private List<Pedido> pedidos = new ArrayList<>();
 
     protected Mesa(){}
 
@@ -36,6 +46,10 @@ public class Mesa {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+    
+    public List<Pedido> getPedidos() {
+        return pedidos;
     }
 
     @Override
@@ -62,5 +76,6 @@ public class Mesa {
             return false;
         return true;
     }
+
     
 }

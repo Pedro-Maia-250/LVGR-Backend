@@ -1,6 +1,10 @@
 package com.lunarvoid.LVGR.entidades;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.lunarvoid.LVGR.entidades.enums.StatusPedido;
 
@@ -8,24 +12,45 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pedido_tb")
-public class Pedido {
-    
+public class Pedido implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Instant momento;
     private  Integer status;
 
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> pedidos = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "mesa_id")
+    private Mesa mesa;
+
     protected Pedido(){}
 
-    public Pedido(Long id, Instant momento, StatusPedido status){
+    public Pedido(Long id, Instant momento, StatusPedido status, Mesa mesa){
         this.id = id;
         this.momento = momento;
         setStatus(status);
+        this.mesa = mesa;
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
     }
 
     public Long getId() {
@@ -51,7 +76,19 @@ public class Pedido {
     public void setStatus(StatusPedido status) {
         this.status = status.getCode();
     }
+    
+    public Set<ItemPedido> getPedidos() {
+        return pedidos;
+    }
 
+    public BigDecimal getTotal(){
+        BigDecimal temp = BigDecimal.ZERO;
+        for (ItemPedido itemPedido : pedidos) {
+            temp = temp.add(itemPedido.getSubTotal());
+        }
+        return temp;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -77,5 +114,4 @@ public class Pedido {
         return true;
     }
 
-    
 }
