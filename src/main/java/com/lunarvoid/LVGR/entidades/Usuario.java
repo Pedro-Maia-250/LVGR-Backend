@@ -2,6 +2,7 @@ package com.lunarvoid.LVGR.entidades;
 
 import com.lunarvoid.LVGR.entidades.enums.NivelAcesso;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,8 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer acesso;
+    
+    @Column(unique = true, nullable = false)
     private String senha;
 
     protected Usuario(){}

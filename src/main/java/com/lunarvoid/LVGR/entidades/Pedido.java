@@ -30,7 +30,7 @@ public class Pedido implements Serializable{
     private  Integer status;
 
     @OneToMany(mappedBy = "id.pedido")
-    private Set<ItemPedido> pedidos = new HashSet<>();
+    private Set<ItemPedido> items = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "mesa_id")
@@ -77,13 +77,13 @@ public class Pedido implements Serializable{
         this.status = status.getCode();
     }
     
-    public Set<ItemPedido> getPedidos() {
-        return pedidos;
+    public Set<ItemPedido> getItems() {
+        return items;
     }
 
     public BigDecimal getTotal(){
         BigDecimal temp = BigDecimal.ZERO;
-        for (ItemPedido itemPedido : pedidos) {
+        for (ItemPedido itemPedido : items) {
             temp = temp.add(itemPedido.getSubTotal());
         }
         return temp;

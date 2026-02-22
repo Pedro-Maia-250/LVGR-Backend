@@ -17,7 +17,7 @@ public enum NivelAcesso {
 
     public static NivelAcesso valueOf(Integer code){
         for (NivelAcesso obj : NivelAcesso.values()) {
-            if (code == obj.getCode()){
+            if (obj.getCode().equals(code)){
                 return obj;
             }
         }

@@ -18,7 +18,7 @@ public enum StatusPedido {
 
     public static StatusPedido valueOf(Integer code){
         for (StatusPedido obj : StatusPedido.values()) {
-            if (code == obj.getCode()){
+            if (obj.getCode().equals(code)){
                 return obj;
             }
         }

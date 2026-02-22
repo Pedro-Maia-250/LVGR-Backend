@@ -38,12 +38,21 @@ public class Produto {
 
     protected Produto(){}
     
-    public Produto(Long id, String nome, String descricao, String imgUrl, BigDecimal price) {
+    public Produto(Long id, String nome, String descricao, String imgUrl, BigDecimal price, Categoria categoria) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.imgUrl = imgUrl;
         this.price = price;
+        this.categoria = categoria;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public Long getId() {
