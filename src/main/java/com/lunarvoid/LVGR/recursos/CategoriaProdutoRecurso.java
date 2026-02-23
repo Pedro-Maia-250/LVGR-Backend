@@ -8,27 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lunarvoid.LVGR.entidades.Categoria;
 import com.lunarvoid.LVGR.entidades.CategoriaProduto;
-import com.lunarvoid.LVGR.entidades.Produto;
-import com.lunarvoid.LVGR.servicos.CategoriaServico;
-import com.lunarvoid.LVGR.servicos.ProdutoServico;
+import com.lunarvoid.LVGR.servicos.CPServico;
 
 @RestController
 @RequestMapping(value = "/cp")
 public class CategoriaProdutoRecurso {
     
     @Autowired
-    private CategoriaServico cs;
-
-    @Autowired
-    private ProdutoServico ps;
+    CPServico servico;
 
     @GetMapping
-    public ResponseEntity<CategoriaProduto> find(){
-        List<Produto> pl = ps.findAll();
-        List<Categoria> cl = cs.findAll();
-        CategoriaProduto response = new CategoriaProduto(pl, cl);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<CategoriaProduto>> find(){
+        return ResponseEntity.ok().body(servico.find());
     }
 }

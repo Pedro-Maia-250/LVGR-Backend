@@ -8,33 +8,29 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.lunarvoid.LVGR.entidades.Mesa;
-import com.lunarvoid.LVGR.repositorios.MesaRepositorio;
+import com.lunarvoid.LVGR.entidades.Alarme;
+import com.lunarvoid.LVGR.repositorios.AlarmeRepositorio;
 import com.lunarvoid.LVGR.servicos.exceptions.DatabaseException;
 import com.lunarvoid.LVGR.servicos.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class MesaServico {
+public class AlarmeServico {
     
     @Autowired
-    MesaRepositorio repositorio;
+    AlarmeRepositorio repositorio;
 
-    public List<Mesa> findAll(){
-        return repositorio.findAll(Sort.by("numero").ascending());
+    public List<Alarme> findAll(){
+        return repositorio.findAll(Sort.by("momento").ascending());
     }
 
-    public Mesa findById(Long id){
+    public Alarme findById(Long id){
         return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Mesa findByToken(String token){
-        return repositorio.findByToken(token).orElseThrow(() -> new ResourceNotFoundException(token));
-    }
-
-    public Mesa save(Mesa Mesa){
-        return repositorio.save(Mesa);
+    public Alarme save(Alarme Alarme){
+        return repositorio.save(Alarme);
     }
 
     public void delete(Long id){
@@ -47,10 +43,11 @@ public class MesaServico {
         }
     }
 
-    public Mesa updateNumero(Long id, Mesa newMesa){
+    public Alarme update(Long id, Alarme newAlarme){
         try{
-            Mesa obj = repositorio.getReferenceById(id);
-            obj.setNumero(newMesa.getNumero());
+            Alarme obj = repositorio.getReferenceById(id);
+            obj.setMesa(newAlarme.getMesa());
+            obj.setMomento(newAlarme.getMomento());
             return repositorio.save(obj);
         }catch(EntityNotFoundException e){
             throw new ResourceNotFoundException(id);

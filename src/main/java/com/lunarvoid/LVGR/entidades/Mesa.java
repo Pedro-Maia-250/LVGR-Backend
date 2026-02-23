@@ -2,14 +2,17 @@ package com.lunarvoid.LVGR.entidades;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,15 +24,34 @@ public class Mesa {
     private Long id;
     private String numero;
 
+    @Column(unique = true, nullable = false, updatable = false)
+    private String token;
+
+    
     @JsonIgnore
     @OneToMany(mappedBy = "mesa")
     private List<Pedido> pedidos = new ArrayList<>();
-
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "mesa")
+    private List<Alarme> alarmes = new ArrayList<>();
+    
     protected Mesa(){}
-
+    
     public Mesa(Long id, String numero) {
         this.id = id;
         this.numero = numero;
+    }
+    
+    public String getToken() {
+        return token;
+    }
+
+    @PrePersist
+    public void gerarToken() {
+        if(this.token == null){
+            this.token = UUID.randomUUID().toString();
+        }
     }
 
     public Long getId() {
@@ -50,6 +72,10 @@ public class Mesa {
     
     public List<Pedido> getPedidos() {
         return pedidos;
+    }
+
+    public List<Alarme> getAlarmes() {
+        return alarmes;
     }
 
     @Override

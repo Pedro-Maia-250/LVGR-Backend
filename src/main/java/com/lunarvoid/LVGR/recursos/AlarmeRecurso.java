@@ -15,42 +15,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.lunarvoid.LVGR.entidades.Mesa;
-import com.lunarvoid.LVGR.servicos.MesaServico;
+import com.lunarvoid.LVGR.entidades.Alarme;
+import com.lunarvoid.LVGR.servicos.AlarmeServico;
 
 
 @RestController
-@RequestMapping(value = "/mesas")
-public class MesaRecurso {
+@RequestMapping(value = "/alarmes")
+public class AlarmeRecurso {
     
     @Autowired
-    MesaServico servico;
+    AlarmeServico servico;
 
     @GetMapping
-    public ResponseEntity<List<Mesa>> findAll(){
+    public ResponseEntity<List<Alarme>> findAll(){
         return ResponseEntity.ok().body(servico.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Mesa> findById(@PathVariable Long id){
+    public ResponseEntity<Alarme> findById(@PathVariable Long id){
         return ResponseEntity.ok().body(servico.findById(id));
     }
 
-    @GetMapping(value = "/t/{s}")
-    public ResponseEntity<Mesa> findByToken(@PathVariable String s){
-        return ResponseEntity.ok().body(servico.findByToken(s));
-    }
-
     @PostMapping
-    public ResponseEntity<Mesa> save(@RequestBody Mesa obj){
+    public ResponseEntity<Alarme> save(@RequestBody Alarme obj){
         obj = servico.save(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Mesa> update(@RequestBody Mesa obj, @PathVariable Long id){
-        return ResponseEntity.ok().body(servico.updateNumero(id, obj));
+    public ResponseEntity<Alarme> update(@RequestBody Alarme obj, @PathVariable Long id){
+        return ResponseEntity.ok().body(servico.update(id, obj));
     }
 
     @DeleteMapping(value = "/{id}")
