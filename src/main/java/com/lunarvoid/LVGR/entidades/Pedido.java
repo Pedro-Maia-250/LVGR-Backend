@@ -9,6 +9,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lunarvoid.LVGR.entidades.enums.StatusPedido;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +33,7 @@ public class Pedido implements Serializable{
     private Instant momento;
     private  Integer status;
 
-    @OneToMany(mappedBy = "id.pedido")
+    @OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL)
     private Set<ItemPedido> items = new HashSet<>();
 
     @ManyToOne
@@ -73,11 +74,11 @@ public class Pedido implements Serializable{
     }
 
     public StatusPedido getStatus() {
-        return StatusPedido.valueOf(status);
+        return (status == null) ? null : StatusPedido.valueOf(status);
     }
 
     public void setStatus(StatusPedido status) {
-        this.status = status.getCode();
+        this.status = (status == null) ? null : status.getCode();
     }
     
     public Set<ItemPedido> getItems() {

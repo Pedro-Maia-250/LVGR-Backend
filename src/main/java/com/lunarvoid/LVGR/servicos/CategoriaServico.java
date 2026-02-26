@@ -27,7 +27,7 @@ public class CategoriaServico {
     CategoriaRepositorio repositorio;
 
     public List<Categoria> findAll(){
-        return repositorio.findAll(Sort.by("ordem").ascending());
+        return repositorio.findByAtivoTrue(Sort.by("ordem").ascending());
     }
 
     public Categoria findById(Long id){
@@ -42,7 +42,17 @@ public class CategoriaServico {
 
     public void delete(Long id){
         try{
-            repositorio.deleteById(id);
+            Categoria obj = repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            if(obj.getProdutos().isEmpty()){
+
+                obj.setAtivo(false);
+                repositorio.save(obj);
+                
+            }else{
+
+                throw new IllegalArgumentException();
+            }
+            
         }catch(EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         }catch(DataIntegrityViolationException e){
@@ -60,6 +70,28 @@ public class CategoriaServico {
         }
     }
 
+
+    @Transactional
+    public void mudarOrdem(Long id, Integer novaOrdem){
+
+        List<Categoria> categorias = repositorio.findAllByOrderByOrdemAsc();
+
+        Categoria atual = categorias.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+
+        categorias.remove(atual);
+        categorias.add(novaOrdem - 1, atual);
+
+        int ordem = 1;
+        for (Categoria c : categorias) {
+            c.setOrdem(ordem++);
+        }
+
+        repositorio.saveAll(categorias);
+    }
+
     @Transactional
     public List<Categoria> updateAll(List<Categoria> listaRecebida) {
 
@@ -70,7 +102,7 @@ public class CategoriaServico {
             }
         }
 
-        List<Categoria> categoriasBanco = repositorio.findAll();
+        List<Categoria> categoriasBanco = repositorio.findByAtivoTrue(Sort.by("ordem").ascending());
 
         if (categoriasBanco.size() != listaRecebida.size()) {
             throw new IllegalArgumentException("Quantidade de categorias incorreta");
@@ -85,7 +117,6 @@ public class CategoriaServico {
                 throw new IllegalArgumentException("ID inexistente");
             }
 
-            categoriaBanco.setNome(nova.getNome());
             categoriaBanco.setOrdem(nova.getOrdem());
         }
 

@@ -17,16 +17,28 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer acesso;
+    private String nome;
+    private boolean ativo = true;
     
     @Column(unique = true, nullable = false)
     private String senha;
 
     protected Usuario(){}
 
-    public Usuario(Long id, NivelAcesso acesso, String senha){
+    public Usuario(Long id, NivelAcesso acesso, String senha, String nome){
         this.id = id;
+        this.nome = nome;
         setAcesso(acesso);
         this.senha = senha;
+        this.ativo = true;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public Long getId() {
@@ -35,6 +47,14 @@ public class Usuario {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public NivelAcesso getAcesso() {

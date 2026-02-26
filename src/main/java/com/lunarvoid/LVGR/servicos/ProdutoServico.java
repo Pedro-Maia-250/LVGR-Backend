@@ -31,7 +31,7 @@ public class ProdutoServico {
     ProdutoRepositorio repositorio;
 
     public List<Produto> findAll(){
-        return repositorio.findAll(Sort.by("categoria").ascending());
+        return repositorio.findByAtivoTrue(Sort.by("categoria").ascending());
     }
 
     public Produto findById(Long id){
@@ -61,19 +61,9 @@ public class ProdutoServico {
             Produto obj = repositorio.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException(id));
 
-            // Deletar imagem física se existir
-            if (obj.getImgUrl() != null) {
-                try {
-                    Path caminho = Paths.get(uploadDir,
-                            obj.getImgUrl().replace("/imagens/", ""));
-                    Files.deleteIfExists(caminho);
-                } catch (IOException e) {
-                    // Você pode logar isso depois
-                    System.out.println("Erro ao deletar imagem física.");
-                }
-            }
+                    obj.setAtivo(false);
 
-            repositorio.delete(obj);
+            repositorio.save(obj);
 
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());

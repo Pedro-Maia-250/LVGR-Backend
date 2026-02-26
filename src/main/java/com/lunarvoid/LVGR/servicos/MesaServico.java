@@ -22,7 +22,7 @@ public class MesaServico {
     MesaRepositorio repositorio;
 
     public List<Mesa> findAll(){
-        return repositorio.findAll(Sort.by("numero").ascending());
+        return repositorio.findByAtivoTrue(Sort.by("numero").ascending());
     }
 
     public Mesa findById(Long id){
@@ -39,7 +39,9 @@ public class MesaServico {
 
     public void delete(Long id){
         try{
-            repositorio.deleteById(id);
+            Mesa obj = repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            obj.setAtivo(false);
+            repositorio.save(obj);
         }catch(EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         }catch(DataIntegrityViolationException e){

@@ -1,5 +1,6 @@
 package com.lunarvoid.LVGR.servicos;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,9 @@ public class AlarmeServico {
         return repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Alarme save(Alarme Alarme){
-        return repositorio.save(Alarme);
+    public Alarme save(Alarme alarme){
+        alarme.setMomento(Instant.now());
+        return repositorio.save(alarme);
     }
 
     public void delete(Long id){

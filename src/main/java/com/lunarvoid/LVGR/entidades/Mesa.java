@@ -27,6 +27,8 @@ public class Mesa {
     @Column(unique = true, nullable = false, updatable = false)
     private String token;
 
+    private boolean ativo = true;
+
     
     @JsonIgnore
     @OneToMany(mappedBy = "mesa")
@@ -41,8 +43,17 @@ public class Mesa {
     public Mesa(Long id, String numero) {
         this.id = id;
         this.numero = numero;
+        this.ativo = true;
     }
     
+    public boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
     public String getToken() {
         return token;
     }

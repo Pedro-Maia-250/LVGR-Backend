@@ -27,6 +27,7 @@ public class Produto {
     private String descricao;
     private String imgUrl;
     private BigDecimal price;
+    private boolean ativo = true;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
@@ -45,6 +46,15 @@ public class Produto {
         this.imgUrl = imgUrl;
         this.price = price;
         this.categoria = categoria;
+        this.ativo = true;
+    }
+
+    public boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public Categoria getCategoria() {
@@ -118,6 +128,10 @@ public class Produto {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public Set<ItemPedido> getPedidos() {
+        return pedidos;
     }
 
 }
