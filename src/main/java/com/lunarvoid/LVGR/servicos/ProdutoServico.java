@@ -47,7 +47,7 @@ public class ProdutoServico {
 
         Files.copy(file.getInputStream(), caminho);
 
-        String url = "/imagens/" + nomeArquivo;
+        String url = "/uploads/" + nomeArquivo;
 
         produto.setImgUrl(url);
 
@@ -85,7 +85,7 @@ public class ProdutoServico {
                 // (Opcional mas recomendado) deletar imagem antiga
                 if (obj.getImgUrl() != null) {
                     Path antiga = Paths.get(uploadDir, 
-                            obj.getImgUrl().replace("/imagens/", ""));
+                            obj.getImgUrl().replace("/imagens/", "").replace("/uploads/", ""));
                     Files.deleteIfExists(antiga);
                 }
 
@@ -93,7 +93,7 @@ public class ProdutoServico {
                 Path caminho = Paths.get(uploadDir, nomeArquivo);
                 Files.copy(file.getInputStream(), caminho);
 
-                obj.setImgUrl("/imagens/" + nomeArquivo);
+                obj.setImgUrl("/uploads/" + nomeArquivo);
             }
 
             return repositorio.save(obj);
@@ -104,3 +104,4 @@ public class ProdutoServico {
     }
 
 }
+

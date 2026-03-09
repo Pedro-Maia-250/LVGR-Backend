@@ -30,7 +30,7 @@ public class PedidoServico {
     ProdutoRepositorio pRepositorio;
 
     public List<Pedido> findAll(){
-        return repositorio.findAll(Sort.by("status").ascending());
+        return repositorio.findByStatusNot(StatusPedido.PAGO.getCode(), Sort.by("momento").ascending());
     }
 
     public Pedido findById(Long id){

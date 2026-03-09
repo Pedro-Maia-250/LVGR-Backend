@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.lunarvoid</groupId>
 	<artifactId>LVGR</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<name>LVGR</name>
 	<description>PROJETO DE GERENCIAMENTO DE RESTAURANTE</description>
 	<url/>
